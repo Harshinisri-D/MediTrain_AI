@@ -1,26 +1,27 @@
 import os
 from dotenv import load_dotenv
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
+from langchain.prompts import ChatPromptTemplate, HumanMessagePromptTemplate, MessagesPlaceholder
+from langchain.schema import SystemMessage
 from langchain.chains import LLMChain
-from langchain_core.prompts import (
-    ChatPromptTemplate,
-    HumanMessagePromptTemplate,
-    MessagesPlaceholder,
-)
-from langchain_core.messages import SystemMessage
 from langchain.chains.conversation.memory import ConversationBufferWindowMemory
 from langchain_groq import ChatGroq
-from flask import send_from_directory
 
+# Load environment variables from .env
 load_dotenv()
 
+# Initialize Flask app
 app = Flask(__name__)
+
 CORS(app, resources={r"/*": {"origins": "*"}})
 
+# Get the API key for Groq
 groq_api_key = os.environ.get("GROQ_API_KEY")
 model = "llama3-8b-8192"
 client = ChatGroq(groq_api_key=groq_api_key, model_name=model)
+
+# Your custom system prompt
 system_prompt = (
     "You are acting as a 45-year-old patient named John visiting a medical clinic for a consultation. "
     "Your role is to simulate a realistic patient experience and dynamically present a different medical complaint or issue each time you are asked about your condition. Your purpose is to help a newly graduated doctor practice and get trained to interact with and treat patients effectively. Select from a diverse range of issues and avoid repeating the same problem unless explicitly prompted. Do not provide medical diagnoses or solutions during the conversation. "
@@ -53,9 +54,11 @@ system_prompt = (
     "Ensure that your responses are empathetic, realistic, and reflective of a genuine patient’s behavior. Dynamically vary complaints for every new interaction to provide a broader learning experience for the doctor.The answers should be short and concise."
 )
 
+# Conversation memory
 memory = ConversationBufferWindowMemory(k=5, memory_key="chat_history", return_messages=True)
 
-def get_reponse(text):
+# Function to get a response from the chatbot
+def get_response(text):
     prompt = ChatPromptTemplate.from_messages(
         [
             SystemMessage(content=system_prompt),
@@ -70,7 +73,8 @@ def get_reponse(text):
         memory=memory,
     )
     return conversation.predict(human_input=text)
-frontend_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'FRONTEND')
+# Path to the FRONTEND folder
+frontend_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'FRONTEND')
 
 @app.route("/")
 def index():
@@ -89,7 +93,7 @@ def response():
         query = data.get("query")
         if not query:
             return jsonify({"error": "Query parameter is missing."}), 400
-        response = get_reponse(query)
+        response = get_response(query)
         return jsonify({"response": response})
     except Exception as e:
         app.logger.error(f"Error processing request: {e}")
@@ -98,6 +102,8 @@ def response():
 @app.route("/test", methods=["GET"])
 def test():
     return jsonify({"api_key_set": bool(groq_api_key), "model": model})
+
+# Run the app
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))  # Render provides the PORT variable
+    port = int(os.environ.get("PORT", 5000))  # Use PORT environment variable if set
     app.run(host="0.0.0.0", port=port, debug=True)
