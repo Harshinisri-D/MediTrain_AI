@@ -14,7 +14,7 @@ async function sendMessage() {
     chatOutput.appendChild(userMessage);
   
     try {
-      const response = await fetch('http://localhost:5000/response', {
+      const response = await fetch('https://meditrain-ai-1-zl6y.onrender.com/response', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
