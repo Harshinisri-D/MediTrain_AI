@@ -2,10 +2,10 @@
 
 Meditrain AI is a chatbot system designed to simulate patient interactions, allowing newly graduated doctors to practice and improve their communication skills with patients. By acting as a virtual patient, Meditrain AI provides a realistic and diverse range of scenarios to help doctors build confidence and empathy in a controlled environment.
 
-## Working Link
-You can check out the live version of the project here: [Visit the live demo](https://meditrainai1.onrender.com)
+##🤖 Working Link
+You can check out the live version of the project here: [Visit the live demo](https://meditrain-ai-1-zl6y.onrender.com)
 
-## Features
+## 🌟Features
 
 - Simulates a realistic patient experience by dynamically varying medical complaints.
 - Responds in conversational language suitable for basic medical knowledge.
@@ -13,7 +13,7 @@ You can check out the live version of the project here: [Visit the live demo](ht
 - Offers subtle cues to guide doctors in patient interactions.
 - API endpoints to fetch responses and test functionality.
 
-## Project Files
+## 📂Project Files
 
 - **`app.py`**: Main Flask application that sets up routes and handles chatbot interactions.
 - **`api.py`**: Provides API endpoints for generating chatbot responses and fetching test user data.
@@ -30,7 +30,7 @@ You can check out the live version of the project here: [Visit the live demo](ht
 2. A Groq API key (add it to a `.env` file).
 3. Flask, Flask-CORS, and other dependencies listed in `requirements.txt`.
 
-## Setup Instructions
+## 📌Setup Instructions
 
 1. Clone the repository:
    ```bash
@@ -99,7 +99,7 @@ You can check out the live version of the project here: [Visit the live demo](ht
 - Add multi-language support for broader accessibility.
 - Integrate a dashboard to analyze doctor-patient interaction patterns.
 
-## Acknowledgments
+## 😊Acknowledgments
 
 - **Infosys Springboard**: For the opportunity to develop this project as part of the internship.
 - **LangChain** and **Groq**: For their APIs and libraries enabling dynamic conversational AI.
