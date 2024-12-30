@@ -9,7 +9,7 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
-client = Groq(api_key=os.getenv("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"))
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 def get_users():
     url = "https://randomuser.me/api/?results=10" 
